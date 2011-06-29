@@ -17,7 +17,7 @@ module Kirk
       parse!
       send(command_handler)
     rescue Exception => e
-      abort "[ERROR] #{e.message}"
+      abort "[ERROR] #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}"
     end
 
   private
