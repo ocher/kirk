@@ -34,7 +34,7 @@ describe "Kirk CLI interface" do
 
   it "exits with an error if the config file does not exist" do
     kirk do |c|
-      c.stderr.read.chomp.should =~ /\[ERROR\] config file `.*?\/Kirkfile` does not exist/
+      c.stderr.read.chomp.should =~ /\[ERROR\] Kirk::MissingConfigFile: config file `.*?\/Kirkfile` does not exist/
     end
 
     last_command.exit_status.should == 1
