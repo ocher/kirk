@@ -12,6 +12,7 @@ module Kirk
 
         @requests_count = 0
         @responses      = []
+        @in_progress    = []
 
         if @options[:host]
           @host = @options.delete(:host).chomp('/')
@@ -50,8 +51,8 @@ module Kirk
         request
       end
 
-      def respond(response)
-        @queue.put(response)
+      def respond(exchange, response)
+        @queue.put([exchange, response])
       end
 
       %w/get post put delete head/.each do |method|
@@ -63,24 +64,36 @@ module Kirk
       end
 
       def process(request)
-        @client.process(request)
+        exchange = Exchange.build(request)
+
+        @in_progress << exchange
+        @client.process(exchange)
+
         @requests_count += 1
       end
 
       def get_responses
         while @requests_count > 0
-          if resp = @queue.poll(timeout, TimeUnit::SECONDS)
-            @responses << resp
+          exchange, resp = @queue.poll(timeout, TimeUnit::SECONDS)
+
+          if resp
+            @responses      << resp
             @requests_count -= 1
           else
-            raise "timed out"
+            @in_progress.each do |ex|
+              ex.cancel
+            end
+
+            @in_progress.each do |ex|
+              ex.wait_for_done
+            end
+
+            raise TimeoutError, "timed out"
           end
         end
 
         completed
       end
-
-    private
 
       def completed
         complete.call if complete

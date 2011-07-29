@@ -2,6 +2,8 @@ require 'kirk'
 
 module Kirk
   class Client
+    class TimeoutError < RuntimeError ; end
+
     require 'kirk/client/group'
     require 'kirk/client/response'
     require 'kirk/client/request'
@@ -51,8 +53,8 @@ module Kirk
       end
     end
 
-    def process(request)
-      client.send Exchange.build(request)
+    def process(exchange)
+      client.send exchange
     end
 
     def stop

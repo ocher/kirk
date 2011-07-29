@@ -23,6 +23,7 @@ module Kirk
         self.response = Response.new(!handler.respond_to?(:on_response_body))
         self.method   = request.method
         self.url      = request.url.to_s
+        self.timeout  = request.group.timeout
 
         if request.headers
           request.headers.each do |name, val|
@@ -77,15 +78,14 @@ module Kirk
         end
 
         response.exception = true
-        group.respond(response)
+        group.respond(self, response)
       end
 
-      # def onExpire
-      #   # p [ :onExpire ]
-      #   if handler.respond_to?(:on_timeout)
-      #     handler.on_timeout
-      #   end
-      # end
+      def onExpire
+        if handler.respond_to?(:on_timeout)
+          handler.on_timeout
+        end
+      end
 
       def onRequestComplete
         if handler.respond_to?(:on_request_complete)
@@ -100,7 +100,7 @@ module Kirk
 
         # Need to return the response after the handler
         # is done with it
-        group.respond(response)
+        group.respond(self, response)
       end
 
       def onResponseContent(buf)

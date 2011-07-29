@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'kirk/client'
+require 'thread'
 
 java_import org.eclipse.jetty.util.thread.QueuedThreadPool
 
@@ -81,16 +82,21 @@ describe 'Kirk::Client' do
     it "allows to use simplified syntax" do
       class MyHandler
         class << self
-          attr_accessor :response_count
+          attr_accessor :response_count, :lock
         end
 
+        self.lock = Mutex.new
         self.response_count = 0
 
         def on_response_complete(response)
-          self.class.response_count += 1
+          self.class.lock.synchronize do
+            self.class.response_count += 1
+          end
         end
       end
+
       h = MyHandler.new
+
       group = Kirk::Client.group(:host => "localhost:9090") do |g|
         g.get    '/', h, 'get.body',    {'X-Request-Method' => 'get'}
         g.put    '/', h, 'put.body',    {'X-Request-Method' => 'put'}
@@ -99,11 +105,17 @@ describe 'Kirk::Client' do
       end
 
       responses = parse_responses(group.responses)
-      expected = ["DELETE delete delete.body", "GET get get.body",
-                  "POST post post.body", "PUT put put.body"]
+      expected  = [ "DELETE delete delete.body",
+                    "GET get get.body",
+                    "POST post post.body",
+                    "PUT put put.body" ]
+
       responses.map do |r|
+
         [r["REQUEST_METHOD"], r["HTTP_X_REQUEST_METHOD"], r["rack.input"]].join ' '
+
       end.sort.should == expected
+
       MyHandler.response_count.should == 4
     end
 
@@ -364,6 +376,17 @@ describe 'Kirk::Client' do
     client = Kirk::Client.new
     group = client.group {}
     group.client.should == client
+  end
+
+  it "times out sanely" do
+    start(lambda { |env| sleep 2; [ 200, {}, 'Hello' ] })
+
+    lambda {
+      Kirk::Client.group(:host => "localhost:9090", :timeout => 1) do |g|
+        g.get "/"
+      end
+    }.should raise_error(Kirk::Client::TimeoutError)
+    sleep 1.1
   end
 
   def start_default_app
