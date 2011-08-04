@@ -5,7 +5,7 @@ describe "Kirk CLI interface" do
     kirk "-c #{kirked_up_path}/Kirkfile" do |c|
       c.stdout.gets.should =~ /INFO - jetty/
       while (output = c.stdout.gets) =~ /INFO - started o\.e\.j\.s\.h\.ContextHandler/; end
-      output.should =~ /INFO - Started SelectChannelConnector@0\.0\.0\.0:9090/
+      output.should =~ /INFO - Started SocketConnector@0\.0\.0\.0:9090/
 
       get '/'
       last_response.should be_successful

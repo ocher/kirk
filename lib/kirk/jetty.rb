@@ -16,7 +16,9 @@ module Kirk
 
     java_import "org.eclipse.jetty.io.ByteArrayBuffer"
 
-    java_import "org.eclipse.jetty.server.nio.SelectChannelConnector"
+    # Working theory: Jetty's NIO connector sucks
+    #java_import "org.eclipse.jetty.server.nio.SelectChannelConnector"
+    java_import "org.eclipse.jetty.server.bio.SocketConnector"
     java_import "org.eclipse.jetty.server.handler.AbstractHandler"
     java_import "org.eclipse.jetty.server.handler.ContextHandler"
     java_import "org.eclipse.jetty.server.handler.ContextHandlerCollection"

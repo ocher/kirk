@@ -110,7 +110,7 @@ module Kirk
 
             host, port = listener.split(':')
 
-            connector = Jetty::SelectChannelConnector.new
+            connector = Jetty::SocketConnector.new
             connector.set_host(host)
             connector.set_port(port.to_i)
 

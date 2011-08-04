@@ -78,7 +78,7 @@ module Kirk
 
     def connectors
       @options[:connectors] ||=
-        [ Jetty::SelectChannelConnector.new.tap do |conn|
+        [ Jetty::SocketConnector.new.tap do |conn|
           host = @options[:host] || '0.0.0.0'
           port = @options[:port] || 9090
 
