@@ -133,8 +133,8 @@ module Kirk
             buffer.write(s.to_java_bytes)
           end
 
-          body.close if body.respond_to?(:close)
         ensure
+          body.close if body.respond_to?(:close)
           input.recycle if input.respond_to?(:recycle)
           request.set_handled(true)
         end

@@ -44,6 +44,9 @@ public class RewindableInputStream extends FilterInputStream {
   // The on disk stream buffer
   private FileChannel tmpFile;
 
+  // The handle to the tmp file (so that we can delete it)
+  private File tmpFileHandle;
+
   public RewindableInputStream(InputStream io) {
     this(io, DEFAULT_BUFFER_SIZE);
   }
@@ -95,6 +98,10 @@ public class RewindableInputStream extends FilterInputStream {
 
     if ( tmpFile != null ) {
       tmpFile.close();
+    }
+
+    if ( tmpFileHandle != null ) {
+      tmpFileHandle.delete();
     }
 
     io.close();
@@ -360,10 +367,9 @@ public class RewindableInputStream extends FilterInputStream {
     File file;
     RandomAccessFile fileStream;
 
-    file = File.createTempFile(TMPFILE_PREFIX, TMPFILE_SUFFIX);
-    file.deleteOnExit();
+    tmpFileHandle = File.createTempFile(TMPFILE_PREFIX, TMPFILE_SUFFIX);
 
-    fileStream = new RandomAccessFile(file, "rw");
+    fileStream = new RandomAccessFile(tmpFileHandle, "rw");
     tmpFile    = fileStream.getChannel();
 
     buf.clear().position(0).limit((int) buffered);
