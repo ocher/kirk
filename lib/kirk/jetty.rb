@@ -23,9 +23,5 @@ module Kirk
     java_import "org.eclipse.jetty.server.Server"
 
     java_import "org.eclipse.jetty.util.component.LifeCycle"
-    java_import "org.eclipse.jetty.util.log.Log"
-    java_import "org.eclipse.jetty.util.log.JavaUtilLog"
-
-    Log.set_log Jetty::JavaUtilLog.new unless Kirk.sub_process?
   end
 end
