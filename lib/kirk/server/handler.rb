@@ -93,6 +93,7 @@ module Kirk
             next if header =~ CONTENT_LENGTH_TYPE_REGEXP
             value = request.get_header(header)
 
+            header = header.to_s
             header.tr! '-', '_'
             header.upcase!
 
