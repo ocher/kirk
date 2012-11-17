@@ -3,7 +3,7 @@ unless Kirk.sub_process?
   require "kirk/jetty/servlet-api-2.5"
 
   %w(util http io continuation server client).each do |mod|
-    require "kirk/jetty/jetty-#{mod}-7.5.3.v20111011"
+    require "kirk/jetty/jetty-#{mod}-7.6.7.v20120910"
   end
 end
 

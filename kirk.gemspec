@@ -23,7 +23,7 @@ probably one of the least HTTP retarded ruby rack server out there.
   s.rubyforge_project         = "kirk"
 
   s.files = Dir["lib/**/*.{rb,jar}"] +
-            ["bin/kirk", "README.md", "LICENSE"]
+            ["bin/kirk", "README.md", "LICENSE", "kirk.gemspec"]
 
   s.executables        = %w(kirk)
   s.default_executable = "kirk"
