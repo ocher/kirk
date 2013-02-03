@@ -14,7 +14,7 @@ desc 'Compile the library'
 task :compile => ['build/kirk/classes'] + FILES do |t|
   ant.property :name => "build.sysclasspath", :value => "ignore"
   ant.javac :srcdir => "src", :destdir => t.prerequisites.first,
-    :debug => true, :source => "1.5", :target => "1.5",
+    :debug => true, :source => "1.6", :target => "1.6",
     :classpath => "#{class_path}:${java.class.path}:${sun.boot.class.path}"
 end
 

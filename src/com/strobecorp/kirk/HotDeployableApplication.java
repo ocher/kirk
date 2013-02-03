@@ -38,7 +38,7 @@ public abstract class HotDeployableApplication extends AbstractHandler {
     }
   }
 
-  private Deploy buildDeploy() {
+  protected Deploy buildDeploy() {
     return new Deploy(config);
   }
 

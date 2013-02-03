@@ -8,8 +8,6 @@ module Rack
         options[:host] = options[:Host]
         options[:port] = options[:Port]
 
-        options[:log_level] ||= "warning"
-
         server = ::Kirk::Server.new(app, options)
 
         yield server if block_given?

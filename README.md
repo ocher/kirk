@@ -4,6 +4,8 @@ Kirk is a wrapper around Jetty that hides all of the insanity and wraps your
 Rack application in a loving embrace. Also, Kirk is probably the least HTTP
 retarded ruby rack server out there.
 
+JRuby 1.6 and 1.7 are supported.
+
 ### TL;DR
 
     gem install kirk
@@ -38,9 +40,6 @@ To take advantage of the zero downtime redeploy features, you will need to
 create a configuration file that describes to Kirk how to start and watch the
 rack application. You can create the file anywhere. For example, let's say that
 we are going to put the following configuration file at `/path/to/Kirkfile`.
-
-    # Set the log level to ALL.
-    log :level => :all
 
     rack "/path/to/my/rackup/config.ru" do
       # Set the host and / or port that this rack application will
@@ -90,9 +89,25 @@ Another way to deploy is by running `kirk redeploy -R /path/to/app/config.ru`
 Use your OS features. For example, write an upstart script or use
 `start-stop-daemon`.
 
-### Logging to a file or syslog
+### Logging 
 
-Kirk just dumps logs to stdout, so just pipe Kirk to `logger`.
+Kirk dumps logs to stderr by default. For better logging control usage of slf4j
+is suggested. slf4j jars need to be added to the classpath:
+
+    jruby -J-cp ".:slf4j-api-1.6.4.jar:slf4j-log4j12-1.6.4.jar:log4j-1.2.16.jar" -S \
+      kirk -c /path/to/Kirkfile
+    
+or add all jars from the lib directory:
+
+    jruby -J-cp ".:lib/*" -S kirk -c /path/to/Kirkfile
+    
+Example log4j.properties
+
+    log4j.rootLogger=INFO, CONSOLE
+    log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+    log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+    log4j.appender.CONSOLE.layout.ConversionPattern=%d{DATE} %5p %c{1}:%L - %m%n
+    log4j.logger.org.eclipse.jetty=INFO
 
 ### Kirk::Client - For all your HTTP needs
 

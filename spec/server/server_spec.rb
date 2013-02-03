@@ -28,8 +28,6 @@ describe 'Kirk::Server' do
     path = hello_world_path('config.ru')
 
     start do
-      log :level => :warning
-
       rack "#{path}" do
         listen 9091
       end
@@ -47,8 +45,6 @@ describe 'Kirk::Server' do
     path2 = goodbye_world_path('config.ru')
 
     start do
-      log :level => :warning
-
       rack "#{path1}" do
         listen '127.0.0.1:9090'
       end
@@ -73,8 +69,6 @@ describe 'Kirk::Server' do
     path2 = goodbye_world_path('config.ru')
 
     start do
-      log :level => :warning
-
       rack "#{path1}" do
         listen '127.0.0.1:9090'
       end
@@ -93,8 +87,6 @@ describe 'Kirk::Server' do
     path = hello_world_path('config.ru')
 
     start do
-      log :level => :warning
-
       rack "#{path}" do
         listen 9091, '127.0.0.1:9092'
       end
@@ -126,8 +118,6 @@ describe 'Kirk::Server' do
     path2 = goodbye_world_path('config.ru')
 
     start do
-      log :level => :warning
-
       rack "#{path1}" do
         hosts 'foo.com', 'bar.com'
       end
@@ -155,8 +145,6 @@ describe 'Kirk::Server' do
     path = randomized_app_path('config.ru')
 
     start do
-      log :level => :warning
-
       rack "#{path}" do
         watch "REVISION"
       end
@@ -181,8 +169,6 @@ describe 'Kirk::Server' do
     path = randomized_app_path('config.ru')
 
     start do
-      log :level => :warning
-
       rack "#{path}" do
         watch "redeploy.txt"
       end

@@ -56,8 +56,6 @@ module Kirk
         server.set_handler(@handler)
       end
 
-      configure!
-
       @server.start
     end
 
@@ -72,10 +70,6 @@ module Kirk
 
   private
 
-    def configure!
-      Kirk.logger.set_level log_level
-    end
-
     def connectors
       @options[:connectors] ||=
         [ Jetty::SelectChannelConnector.new.tap do |conn|
@@ -89,20 +83,6 @@ module Kirk
 
     def watcher
       @options[:watcher]
-    end
-
-    def log_level
-      case (@options[:log_level] || "info").to_s
-      when "severe"   then Level::SEVERE
-      when "warning"  then Level::WARNING
-      when "info"     then Level::INFO
-      when "config"   then Level::CONFIG
-      when "fine"     then Level::FINE
-      when "finer"    then Level::FINER
-      when "finest"   then Level::FINEST
-      when "all"      then Level::ALL
-      else Level::INFO
-      end
     end
   end
 end

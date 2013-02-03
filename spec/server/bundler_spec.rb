@@ -15,7 +15,7 @@ describe "Kirk bundler integration" do
     get '/'
     last_response.should be_successful
     last_response.should have_body("required ActiveSupport\n" \
-                                   "failed to load Rake\n")
+                                   "failed to load rspec\n")
   end
 
   it "doesn't use stale standby instances" do
@@ -23,14 +23,14 @@ describe "Kirk bundler integration" do
 
     get '/'
     last_response.should have_body("required ActiveSupport\n" \
-                                   "failed to load Rake\n")
+                                   "failed to load rspec\n")
 
     File.open bundled_app_path('Gemfile'), 'w' do |f|
       f.puts <<-GEMFILE
         source 'http://rubygems.org'
 
         gem 'rack'
-        gem 'rake'
+        gem 'rspec'
         gem 'activesupport'
       GEMFILE
     end
@@ -39,7 +39,7 @@ describe "Kirk bundler integration" do
 
     get '/'
     last_response.should have_body("required ActiveSupport\n" \
-                                   "successfully loaded Rake\n")
+                                   "successfully loaded rspec\n")
   end
 
   it "doesn't take down the live application if something goes wrong when starting a redeploy" do
@@ -52,7 +52,6 @@ describe "Kirk bundler integration" do
         source 'http://rubygems.org'
 
         gem 'rack'
-        gem 'rake'
         gem 'activesupport'
         gem 'fail'
       GEMFILE
@@ -62,6 +61,6 @@ describe "Kirk bundler integration" do
 
     get '/'
     last_response.should have_body("required ActiveSupport\n" \
-                                   "failed to load Rake\n")
+                                   "failed to load rspec\n")
   end
 end

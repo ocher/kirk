@@ -34,6 +34,7 @@ describe "Kirk's Rack handler" do
       'CONTENT_LENGTH'    => "0",
       'HTTP_HOST'         => "example.org",
       'HTTP_ACCEPT'       => "*/*",
+      'HTTP_USER_AGENT'   => 'Ruby',
       'HTTP_CONNECTION'   => 'close',
 
       'rack.input'        => '',

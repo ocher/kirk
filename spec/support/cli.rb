@@ -32,7 +32,7 @@ module SpecHelpers
   end
 
   def kirk(cmd = "", &blk)
-    command = Command.new("kirk #{cmd}")
+    command = Command.new("bin/kirk #{cmd}")
     command.run(&blk)
 
     @last_command = command

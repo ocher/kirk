@@ -5,10 +5,10 @@ run lambda { |e|
   body << "required ActiveSupport\n"
 
   begin
-    require 'rake'
-    body << "successfully loaded Rake\n"
+    require 'rspec'
+    body << "successfully loaded rspec\n"
   rescue LoadError
-    body << "failed to load Rake\n"
+    body << "failed to load rspec\n"
   end
 
   [ 200, { 'Content-Type' => 'text/plain' }, [ body ] ]
