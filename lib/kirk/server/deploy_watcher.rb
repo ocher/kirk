@@ -114,7 +114,8 @@ module Kirk
            Errno::EWOULDBLOCK,
            Errno::ECONNABORTED,
            Errno::EPROTO,
-           Errno::EINTR
+           Errno::EINTR,
+           IOError                # Ubuntu 10.4 raises such exception on accept_nonblock
       # Nothing
     ensure
       conn.close if conn
