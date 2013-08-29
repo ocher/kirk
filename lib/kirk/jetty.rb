@@ -2,6 +2,10 @@
 unless Kirk.sub_process?
   require "kirk/jetty/servlet-api-2.5"
 
+  require 'kirk/jetty/log4j-1.2.14.jar'
+  require 'kirk/jetty/slf4j-api-1.6.1.jar'
+  require 'kirk/jetty/slf4j-log4j12-1.6.1.jar'
+
   %w(util http io continuation server client).each do |mod|
     require "kirk/jetty/jetty-#{mod}-7.6.7.v20120910"
   end
